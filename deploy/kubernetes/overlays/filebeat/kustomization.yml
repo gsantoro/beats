@@ -1,0 +1,5 @@
+namePrefix: filebeat-
+commonLabels:
+  k8s-app: filebeat
+resources:
+  - ../../base/beat

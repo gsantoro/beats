@@ -1,0 +1,9 @@
+namespace: kube-system
+resources:
+  # - service-account.yaml
+  # - leases-role.yaml
+  # - configmap-role.yaml
+  - cluster-role.yaml
+  # - role-binding.yaml
+  # - configmap.yaml
+  # - daemonset.yaml
