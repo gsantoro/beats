@@ -1,0 +1,100 @@
+namePrefix: metricbeat-
+commonLabels:
+  k8s-app: metricbeat
+resources:
+  - ./base/beat
+  # - cluster-role-binding.yaml
+  # - leases-role-binding.yaml
+  # - kubeadm-config-role-binding.yaml
+  # - ./base/beat/configmap.yaml
+  # - ./base/beat/daemonset.yaml
+images:
+  - name: docker.elastic.co/beats/beat
+    newName: docker.elastic.co/beats/metricbeat
+    newTag: "8.5.0"
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/args
+        value:
+          - "-c"
+          - "/etc/metricbeat.yml"
+          - "-e"
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: metricbeat
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/0/mountPath
+        value: /etc/metricbeat.yml
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/0/subPath
+        value: metricbeat.yml
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/1/mountPath
+        value: /usr/share/metricbeat/data
+      - op: replace
+        path: /spec/template/spec/volumes/3/hostPath/path
+        value: /var/lib/metricbeat-data
+    target:
+      kind: DaemonSet
+      name: daemonset
+  - patch: |-
+      - op: replace
+        path: /rules/0/resources
+        value:
+          - nodes
+          - namespaces
+          - events
+          - pods
+          - services
+          - persistentvolumes
+          - persistentvolumeclaims
+      - op: replace
+        path: /rules/1/resources
+        value:
+          - statefulsets
+          - deployments
+          - replicasets
+          - daemonsets
+      - op: replace
+        path: /rules/2/resources
+        value:
+          - jobs
+          - cronjobs
+      - op: add
+        path: /rules/-
+        value:
+          apiGroups: ["extensions"]
+          resources:
+          - replicasets
+          verbs: ["get", "list", "watch"]
+      - op: add
+        path: /rules/-
+        value:
+          apiGroups: ["storage.k8s.io"]
+          resources:
+            - storageclasses
+          verbs: ["get", "list", "watch"]
+      - op: add
+        path: /rules/-
+        value:
+          apiGroups:
+          - ""
+          resources:
+          - nodes/stats
+          verbs:
+          - get
+      - op: add
+        path: /rules/-
+        value:
+          nonResourceURLs:
+          - "/metrics"
+          verbs:
+          - get
+    target:
+      kind: ClusterRole
+      name: cluster-role
+
+
+
+

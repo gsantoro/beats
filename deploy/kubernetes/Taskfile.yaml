@@ -6,9 +6,23 @@ vars:
   GREETING: Hello, World!
 
 tasks:
-  default:
+  beat:
     cmds:
-      - kustomize build overlays/filebeat --reorder=none > {{.OUTPUT_FILE}}
+      - kustomize build overlays/{{.BEAT}} --reorder=none > {{.OUTPUT_FILE}}
     vars:
-      # OUTPUT_FILE: filebeat-kubernetes.tmp.yaml
-      OUTPUT_FILE: filebeat-kubernetes.yaml
+      BEAT: '{{default "filebeat" .BEAT}}'
+
+      # OUTPUT_FILE: "{{.BEAT}}-kubernetes.tmp.yaml"
+      OUTPUT_FILE: "{{.BEAT}}-kubernetes.yaml"
+
+  filebeat:
+    cmds:
+      - task: beat
+        vars:
+          BEAT: filebeat
+
+  metricbeat:
+    cmds:
+      - task: beat
+        vars:
+          BEAT: metricbeat
