@@ -3,3 +3,33 @@ commonLabels:
   k8s-app: filebeat
 resources:
   - ../../base/beat
+images:
+  - name: docker.elastic.co/beats/beat
+    newName: docker.elastic.co/beats/filebeat
+    newTag: "8.5.0"
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/args
+        value:
+          - "-c"
+          - "/etc/filebeat.yml"
+          - "-e"
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: filebeat
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/0/mountPath
+        value: /etc/filebeat.yml
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/0/subPath
+        value: filebeat.yml
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/1/mountPath
+        value: /usr/share/filebeat/data
+      - op: replace
+        path: /spec/template/spec/volumes/3/hostPath/path
+        value: /var/lib/filebeat-data
+    target:
+      kind: DaemonSet
+      name: daemonset

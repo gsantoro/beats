@@ -1,0 +1,14 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - kustomize build overlays/filebeat --reorder=none > {{.OUTPUT_FILE}}
+    vars:
+      # OUTPUT_FILE: filebeat-kubernetes.tmp.yaml
+      OUTPUT_FILE: filebeat-kubernetes.yaml
