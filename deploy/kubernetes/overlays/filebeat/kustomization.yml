@@ -7,6 +7,9 @@ images:
   - name: docker.elastic.co/beats/beat
     newName: docker.elastic.co/beats/filebeat
     newTag: "8.5.0"
+patchesStrategicMerge:
+  - configmap.yaml
+  - cluster-role.yaml
 patches:
   - patch: |-
       - op: replace
@@ -27,9 +30,33 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/volumeMounts/1/mountPath
         value: /usr/share/filebeat/data
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts/-
+        value:
+          name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts/-
+        value:
+          name: varlog
+          mountPath: /var/log
+          readOnly: true
       - op: replace
-        path: /spec/template/spec/volumes/3/hostPath/path
+        path: /spec/template/spec/volumes/1/hostPath/path
         value: /var/lib/filebeat-data
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value:
+          name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value:
+          name: varlog
+          hostPath:
+            path: /var/log
     target:
       kind: DaemonSet
       name: daemonset
