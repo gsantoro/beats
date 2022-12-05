@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch filebeat",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "cwd": "${workspaceFolder}/filebeat",
+            "program": "${workspaceFolder}/filebeat/main.go",
+            "args": [
+                "-c",
+                "${workspaceFolder}/dev-tools/telepresence/filebeat/filebeat.yml",
+                "-e"
+            ],
+            "envFile": "${workspaceFolder}/dev-tools/telepresence/filebeat/.env"
+        },
+        {
+            "name": "Launch metricbeat",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "cwd": "${workspaceFolder}/metricbeat",
+            "program": "${workspaceFolder}/metricbeat/main.go",
+            "args": [
+                "-c",
+                "${workspaceFolder}/dev-tools/telepresence/metricbeat/metricbeat.yml",
+                "--path.home",
+                "${workspaceFolder}/dev-tools/telepresence/metricbeat",
+                "-e"
+            ],
+            "envFile": "${workspaceFolder}/dev-tools/telepresence/metricbeat/.env"
+        }
+    ]
+}
