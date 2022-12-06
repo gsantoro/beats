@@ -1,0 +1,9 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - kubectl apply -f service-account.yml
+      - kubectl -n kube-system create token metricbeat > tokens/service-account-token.txt

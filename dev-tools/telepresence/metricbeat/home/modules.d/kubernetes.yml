@@ -8,7 +8,8 @@
   period: 10s
   host: ${NODE_NAME}
   hosts: ["https://${NODE_NAME}:10250"]
-  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+  # bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+  bearer_token_file: ${SERVICE_ACCOUNT_TOKEN_FILE}
   ssl.verification_mode: "none"
   # If there is a CA bundle that contains the issuer of the certificate used in the Kubelet API,
   # remove ssl.verification_mode entry and use the CA, for instance:
@@ -19,6 +20,6 @@
     - proxy
   period: 10s
   host: ${NODE_NAME}
-  hosts: ["my-kube-proxy.kube-system:10249"]
+  hosts: ["localhost:10249"]
   # If using Red Hat OpenShift should be used this `hosts` setting instead:
   # hosts: ["localhost:29101"]

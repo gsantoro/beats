@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch metricbeat",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "cwd": "${workspaceFolder}/metricbeat",
+            "program": "${workspaceFolder}/metricbeat/main.go",
+            "args": [
+                "-c",
+                "${workspaceFolder}/dev-tools/telepresence/metricbeat/home/metricbeat.yml",
+                "--path.home",
+                "${workspaceFolder}/dev-tools/telepresence/metricbeat/home",
+                "-e"
+            ],
+            "envFile": "${workspaceFolder}/dev-tools/telepresence/metricbeat/.env"
+        }
+    ]
+}
