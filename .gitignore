@@ -49,8 +49,5 @@ x-pack/dockerlogbeat/temproot.tar
 # Files generated with the bump version automations
 *.bck
 
-# dev tools
-dev-tools/telepresence/**/tokens
-dev-tools/telepresence/**/.env
-dev-tools/telepresence/**/home/data
-dev-tools/telepresence/**/home/logs
+
+*/__debug_bin
