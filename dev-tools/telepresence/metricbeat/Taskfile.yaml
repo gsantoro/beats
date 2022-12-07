@@ -5,8 +5,21 @@ version: '3'
 tasks:
   default:
     cmds:
+      - task: token-create
+      - task: ca-crt-create
+      - task: kube-proxy-port-forward
+
+  token-create:
+    cmds:
       - kubectl apply -f service-account.yml
-      - kubectl -n kube-system create token metricbeat > tokens/service-account-token.txt
+      - kubectl -n kube-system create token metricbeat > secrets/service-account-token.txt
+
+  ca-crt-create:
+    cmds:
+      - kubectl -n kube-system get cm kube-root-ca.crt -o json | jq -r '.data."ca.crt"' > secrets/ca.crt
+
+  kube-proxy-port-forward:
+    cmds:
       - kubectl port-forward -n kube-system {{.POD_NAME}} 10249:10249
     vars:
       POD_NAME:
