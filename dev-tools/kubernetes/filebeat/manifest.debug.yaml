@@ -70,8 +70,7 @@ spec:
         image: filebeat-debug-image
         args: [
           "-c", "/etc/filebeat.yml",
-          "-e",
-          "-system.hostfs=/hostfs",
+          "-e"
         ]
         ports:
         - containerPort: 56268

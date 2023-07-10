@@ -203,10 +203,11 @@ def beat(
     k8s_expose(beat=beat, mode=mode, k8s_cluster=k8s_cluster)
 
 
-beat(beat="metricbeat",
-    #  mode="debug",
-     mode="run",
-     arch="amd64",
-     k8s_env="aws",
+beat(beat="filebeat",
+     mode="debug",
+    #  mode="run",
+    #  arch="amd64",
+     arch="arm64",
+     k8s_env="kind",
      k8s_cluster="single",
      )
