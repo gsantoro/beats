@@ -17,5 +17,5 @@ WORKDIR /usr/share/heartbeat
 COPY --from=builder /go/bin/dlv /go/bin/dlv
 COPY --from=builder /usr/share/heartbeat/heartbeat-debugger /usr/share/heartbeat/heartbeat-debugger
 
-ENTRYPOINT ["dlv", "--headless", "--listen=:56268", "--api-version=2", "--log",  "--log-output", "debugger", "exec", "/usr/share/heartbeat/heartbeat-debugger", "--"]
+ENTRYPOINT ["dlv", "--headless", "--listen=:56268", "--api-version=2", "--log", "--log-output", "rpc,dap,debugger", "exec", "/usr/share/heartbeat/heartbeat-debugger", "--"]
 CMD [ "-e" ]
